@@ -4,10 +4,10 @@
 
 **Раскладывает папку «Загрузки» по категориям и типам, не трогая чужие папки программ и игр. Сначала показывает план, потом двигает, и всё можно откатить.**
 
-[Скачать для Windows](https://github.com/ALEXalesha/SortProgramm/releases/latest) &nbsp;·&nbsp; [English version of this file](README.md)
+[Скачать для Windows](https://github.com/ALEXalesha/SortDownloads/releases/latest) &nbsp;·&nbsp; [English version of this file](README.md)
 
-[![CI](https://github.com/ALEXalesha/SortProgramm/actions/workflows/ci.yml/badge.svg)](https://github.com/ALEXalesha/SortProgramm/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/ALEXalesha/SortProgramm?color=16a34a)](https://github.com/ALEXalesha/SortProgramm/releases/latest)
+[![CI](https://github.com/ALEXalesha/SortDownloads/actions/workflows/ci.yml/badge.svg)](https://github.com/ALEXalesha/SortDownloads/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/ALEXalesha/SortDownloads?color=16a34a)](https://github.com/ALEXalesha/SortDownloads/releases/latest)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <img src="docs/screenshots/window.png" width="860" alt="План раскладки: файл, куда поедет и почему">

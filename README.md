@@ -4,10 +4,10 @@
 
 **Sorts the Downloads folder into categories and file types without touching other programs' and games' folders. It shows the plan first, moves second, and every move can be undone.**
 
-[Download for Windows](https://github.com/ALEXalesha/SortProgramm/releases/latest) &nbsp;·&nbsp; [Русская версия этого файла](README.ru.md)
+[Download for Windows](https://github.com/ALEXalesha/SortDownloads/releases/latest) &nbsp;·&nbsp; [Русская версия этого файла](README.ru.md)
 
-[![CI](https://github.com/ALEXalesha/SortProgramm/actions/workflows/ci.yml/badge.svg)](https://github.com/ALEXalesha/SortProgramm/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/ALEXalesha/SortProgramm?color=16a34a)](https://github.com/ALEXalesha/SortProgramm/releases/latest)
+[![CI](https://github.com/ALEXalesha/SortDownloads/actions/workflows/ci.yml/badge.svg)](https://github.com/ALEXalesha/SortDownloads/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/ALEXalesha/SortDownloads?color=16a34a)](https://github.com/ALEXalesha/SortDownloads/releases/latest)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 <img src="docs/screenshots/window.png" width="860" alt="The plan: each file, where it goes, and why">
@@ -71,7 +71,7 @@ python main.py --path "D:/Downloads" --apply
 python main.py --cli --deep            # re-sort what was sorted before
 ```
 
-Ready Windows builds, an installer and a portable zip, are on the [releases page](https://github.com/ALEXalesha/SortProgramm/releases/latest). The installer ships no settings of its own: the first start uses your Downloads folder and writes `config.json` itself. The window opens where it was closed and at the same size (`window.json` next to `config.json`); if that monitor is gone, it opens on the one you have.
+Ready Windows builds, an installer and a portable zip, are on the [releases page](https://github.com/ALEXalesha/SortDownloads/releases/latest). The installer ships no settings of its own: the first start uses your Downloads folder and writes `config.json` itself. The window opens where it was closed and at the same size (`window.json` next to `config.json`); if that monitor is gone, it opens on the one you have.
 
 ## Screenshots are generated
 
