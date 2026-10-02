@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Публикация на GitHub: https://github.com/ALEXalesha/SortProgramm
+# Публикация на GitHub: https://github.com/ALEXalesha/SortDownloads
 #
 #   bash tools/publish_github.sh            # только код
 #   bash tools/publish_github.sh v4.1.0     # код и тег
@@ -16,7 +16,7 @@
 set -euo pipefail
 
 export PATH="$PATH:/c/Program Files/GitHub CLI"
-REPO=ALEXalesha/SortProgramm
+REPO=ALEXalesha/SortDownloads
 # Личный адрес не записан здесь строкой: скрипт берёт его из настроек репозитория.
 # Строкой он однажды уехал на GitHub внутри такого же скрипта.
 PRIVATE_EMAIL="$(git config user.email)"
