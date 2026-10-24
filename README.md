@@ -21,7 +21,7 @@ Code, tests and docs are written by Claude (Anthropic) in Claude Code. Ideas, te
 
 ## What it does
 
-Files go to `Category / Type / file`, for example `Учёба / Documents / задачи.pdf` (study / documents). The category is chosen in a fixed order, and the plan names which step decided it:
+Files go to `Category / Type / file`, for example `Study / Documents / задачи.pdf`. Category folders have English names: Study, Docs, AI, Dev, Electronics, 3D, Games, Design, Apps, Media, Screenshots and the fallback Others. The category is chosen in a fixed order, and the plan names which step decided it:
 
 0. a rule set for this exact file from the window (right click, "always put into…");
 1. hand-written rules for exact names (`overrides.json`);
@@ -52,7 +52,7 @@ pip install -r requirements-dev.txt
 python -m pytest
 ```
 
-674 tests, about 25 seconds, covering the scanner, classifier, patterns, planner, mover, config, history, CLI and both windows.
+676 tests, about 25 seconds, covering the scanner, classifier, patterns, planner, mover, config, history, CLI and both windows.
 
 `tests/test_user_rules_props.py` runs **hypothesis properties** for the rules editor, 150 to 300 random examples each. It builds random program rules and random chains of user actions, successful and refused, with deliberately bad names, and checks the whole contract after every action: no reference to a missing category, every category is a folder of its own, `managed_folders` never shrinks, no keyword lives in two categories, a refused action changes nothing, the file round-trips, edits survive an update of `rules.json`, and a rule for a file beats everything else.
 

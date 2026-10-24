@@ -5,6 +5,7 @@ config.json решают не меньше. Все случаи ниже — н�
 на которых переразложение однажды сработало неверно. Тесты держат эти границы,
 чтобы правка конфига не сломала их молча.
 """
+import re
 from pathlib import Path
 
 import pytest
@@ -37,15 +38,15 @@ def category(cfg: Config, name: str) -> str:
         # CAD-формат: слово «launcher» уводило деталь в Игры
         ("Puck_Launcher.step", "3D"),
         # LTX-Video — модель генерации видео, ролики демоted в Others
-        ("LTX_2.3_ia2v_00001_.mp4", "Нейросети"),
+        ("LTX_2.3_ia2v_00001_.mp4", "AI"),
         # исходники страниц уезжали из Кода в Others
-        ("liquid-glass.html", "Код"),
-        ("coffee-site.html", "Код"),
-        ("workflow.json", "Код"),
+        ("liquid-glass.html", "Dev"),
+        ("coffee-site.html", "Dev"),
+        ("workflow.json", "Dev"),
         # BeamMP — мультиплеер для BeamNG, слово «installer» уводило в Программы
-        ("BeamMP_Installer.exe", "Игры"),
+        ("BeamMP_Installer.exe", "Games"),
         # безымянный .exe должен остаться программой, а не упасть в Others
-        ("RadGen.exe", "Программы"),
+        ("RadGen.exe", "Apps"),
     ],
 )
 def test_resort_does_not_demote_correctly_placed_file(cfg, name, expected):
@@ -57,20 +58,20 @@ def test_resort_does_not_demote_correctly_placed_file(cfg, name, expected):
 
 def test_electronics_wins_over_programs(cfg):
     """Иначе слово `driver` забирает драйвер платы CH340 себе."""
-    assert category(cfg, "driver_ch340_341.zip") == "Электроника"
+    assert category(cfg, "driver_ch340_341.zip") == "Electronics"
 
 
 def test_programs_win_over_media(cfg):
     """Иначе слово `music` уводит установщик плеера в музыку."""
-    assert category(cfg, "Yandex_Music_x64_5.92.1.exe") == "Программы"
+    assert category(cfg, "Yandex_Music_x64_5.92.1.exe") == "Apps"
 
 
 def test_study_wins_over_documents(cfg):
-    assert category(cfg, "Памятки_к_экзамену_9_класс.pdf") == "Учёба"
+    assert category(cfg, "Памятки_к_экзамену_9_класс.pdf") == "Study"
 
 
 def test_contract_goes_to_documents(cfg):
-    assert category(cfg, "Dop._soglashenie_k_dogovoru___U-1570-25.docx") == "Документы"
+    assert category(cfg, "Dop._soglashenie_k_dogovoru___U-1570-25.docx") == "Docs"
 
 
 # --- шаблоны имён ---
@@ -81,11 +82,11 @@ def test_frame_range_is_a_render(cfg):
 
 
 def test_bare_date_name_is_a_clip(cfg):
-    assert category(cfg, "0606.mp4") == "Медиа"
+    assert category(cfg, "0606.mp4") == "Media"
 
 
 def test_telegram_photo_is_a_screenshot(cfg):
-    assert category(cfg, "photo_2026-06-19_20-03-13.jpg") == "Скриншоты"
+    assert category(cfg, "photo_2026-06-19_20-03-13.jpg") == "Screenshots"
 
 
 # --- давние ловушки ---
@@ -93,7 +94,7 @@ def test_telegram_photo_is_a_screenshot(cfg):
 
 def test_font_lora_is_not_an_ai_model(cfg):
     """Шрифт Lora не имеет отношения к LoRA."""
-    assert category(cfg, "Lora-Regular.ttf") == "Дизайн"
+    assert category(cfg, "Lora-Regular.ttf") == "Design"
 
 
 @pytest.mark.parametrize(
@@ -114,7 +115,7 @@ def test_schedule_goes_to_studies(cfg, name):
     расписания, расписанию. Транслитерация рядом — так устроены все пары в этих
     правилах, и имя `raspisanie_2026.pdf` приходит с сайтов так же часто.
     """
-    assert category(cfg, name) == "Учёба"
+    assert category(cfg, name) == "Study"
 
 
 @pytest.mark.parametrize(
@@ -127,7 +128,7 @@ def test_schedule_word_does_not_catch_its_neighbours(cfg, name):
     Основа обрывается на `расписан` нарочно: `распис` забрал бы и расписку, и
     расписной поднос, а Учёба стоит первой категорией и выигрывает у всех.
     """
-    assert category(cfg, name) != "Учёба"
+    assert category(cfg, name) != "Study"
 
 
 def test_managed_folders_cover_all_categories(cfg):
@@ -152,14 +153,14 @@ def test_managed_folders_cover_all_types(cfg):
         # с нейтральным именем уезжала в Others при снятой галочке выноса.
         ("деталь.stl", "3D"),
         ("model.fbx", "3D"),
-        ("макет.psd", "Дизайн"),
-        ("скрипт.js", "Код"),
+        ("макет.psd", "Design"),
+        ("скрипт.js", "Dev"),
         # `.cpp` и `.java` стоят в type_map["Code"] — программа знает, что это
         # исходники, и всё равно клала их в `Others/Code`: слова в категории
         # «Код» не было, а соседние `.py`, `.js`, `.ts`, `.html` были. Снаружи
         # это выглядит как «не опознан», хотя тип опознан безошибочно.
-        ("main.cpp", "Код"),
-        ("Hello.java", "Код"),
+        ("main.cpp", "Dev"),
+        ("Hello.java", "Dev"),
     ],
 )
 def test_extension_known_to_type_map_is_known_to_a_category(cfg, name, expected):
@@ -174,7 +175,7 @@ def test_extension_known_to_type_map_is_known_to_a_category(cfg, name, expected)
         # Одна такая запись увела бы в «Код» половину загрузок — ровно тот
         # случай, ради которого пустую строку в списке слов выбрасывают.
         ("таблица.csv", "Others"),
-        ("style.css", "Код"),
+        ("style.css", "Dev"),
     ],
 )
 def test_short_extension_words_do_not_swallow_neighbours(cfg, name, expected):
@@ -229,12 +230,12 @@ def test_short_stem_does_not_grab_the_middle_of_a_word(cfg, name, expected):
         ("фон_лес.jpg", "3D"),
         ("студийный фон.hdr", "3D"),
         ("фон2.png", "3D"),
-        ("ИВО 2026.pdf", "Учёба"),
-        ("ИВО2026.pdf", "Учёба"),
-        ("виво разбор.pdf", "Учёба"),
-        ("зиво.pdf", "Учёба"),
-        ("os_sim.py", "Код"),
-        ("sim-city.exe", "Код"),
+        ("ИВО 2026.pdf", "Study"),
+        ("ИВО2026.pdf", "Study"),
+        ("виво разбор.pdf", "Study"),
+        ("зиво.pdf", "Study"),
+        ("os_sim.py", "Dev"),
+        ("sim-city.exe", "Dev"),
     ],
 )
 def test_whole_word_stem_still_wins(cfg, name, expected):
@@ -247,12 +248,12 @@ def test_whole_word_stem_still_wins(cfg, name, expected):
         # Шаблоны бьют раньше ключевых слов, поэтому слова с границами
         # переехали в конец `patterns` — за якорные выражения. Иначе
         # безымянный `фон` в имени снимка забирал бы снимок себе.
-        ("Снимок экрана 2026 фон.png", "Скриншоты"),
-        ("photo_2026-06-19_20-03-13 фон.jpg", "Скриншоты"),
+        ("Снимок экрана 2026 фон.png", "Screenshots"),
+        ("photo_2026-06-19_20-03-13 фон.jpg", "Screenshots"),
         # …а сами якорные выражения от перестановки не сдвинулись
         ("0001-0250.mp4", "3D"),
-        ("0606.mp4", "Медиа"),
-        ("audio-2026-01-02-lecture.mp3", "Медиа"),
+        ("0606.mp4", "Media"),
+        ("audio-2026-01-02-lecture.mp3", "Media"),
     ],
 )
 def test_anchored_patterns_still_win_over_word_patterns(cfg, name, expected):
@@ -268,11 +269,11 @@ def test_mid_word_match_is_still_allowed_where_it_is_right(cfg):
     опознано хвостом слова и опознано верно. Поэтому границы получили ровно
     три обрубка, а не весь список.
     """
-    assert category(cfg, "ChromeSetup.exe") == "Программы"
-    assert category(cfg, "48RXF1.scs") == "Игры"
-    assert category(cfg, "BearVPN_2.7.0.exe") == "Программы"
-    assert category(cfg, "LegacyLauncher.exe") == "Игры"
-    assert category(cfg, "WindowsAppRuntimeInstall-x64.exe") == "Программы"
+    assert category(cfg, "ChromeSetup.exe") == "Apps"
+    assert category(cfg, "48RXF1.scs") == "Games"
+    assert category(cfg, "BearVPN_2.7.0.exe") == "Apps"
+    assert category(cfg, "LegacyLauncher.exe") == "Games"
+    assert category(cfg, "WindowsAppRuntimeInstall-x64.exe") == "Apps"
 
 
 # --- правила-призраки: запись есть, а до неё не доходит очередь ---
@@ -288,10 +289,10 @@ def test_micropython_is_not_shadowed_by_python(cfg):
     `иво` и `sim`, только наоборот: мешает не хвост чужого слова, а собственная
     середина. Лечится тем же — переездом в `patterns`, которые бьют раньше слов.
     """
-    assert category(cfg, "micropython-esp32-20240105.bin") == "Электроника"
-    assert category(cfg, "MicroPython_v1.24.uf2") == "Электроника"
+    assert category(cfg, "micropython-esp32-20240105.bin") == "Electronics"
+    assert category(cfg, "MicroPython_v1.24.uf2") == "Electronics"
     # а сам «Код» на месте: обычный питон никуда не переехал
-    assert category(cfg, "python-3.12.4-amd64.exe") == "Код"
+    assert category(cfg, "python-3.12.4-amd64.exe") == "Dev"
 
 
 def test_no_extension_is_named_in_two_types(cfg):
@@ -319,3 +320,33 @@ def test_shipped_rules_read_without_complaints():
     """
     config = Config.load(CONFIG_PATH, user=False)
     assert config.problems == []
+
+
+_CYRILLIC = re.compile("[а-яёА-ЯЁ]")
+
+
+def test_category_folders_have_english_names():
+    """Папки категорий в загрузках - латиницей (Алексей, 24.10.2026).
+
+    Русские имена (`Учёба`, `Программы`, ...) ему не нравились на вид, и с
+    правил 24.10 категории называются по-английски: Study, Docs, AI, Dev,
+    Electronics, 3D, Games, Design, Apps, Media, Screenshots, запасная Others.
+    Имя категории - это имя папки на диске, поэтому проверяем все места, откуда
+    оно туда попадает: категории, шаблоны, ручные правила, `managed_folders`,
+    запасную категорию. Ручное правило со старым русским именем создало бы
+    рядом с `Apps` вторую папку `Программы`.
+    """
+    config = Config.load(CONFIG_PATH, user=False)
+    names = {
+        "categories": list(config.categories),
+        "patterns": list(config.patterns),
+        "overrides": sorted(set(config.overrides.values())),
+        "managed_folders": list(config.managed_folders),
+        "fallback_category": [config.fallback_category],
+    }
+    russian = {where: [n for n in values if _CYRILLIC.search(n)]
+               for where, values in names.items()}
+    assert {k: v for k, v in russian.items() if v} == {}
+    # Ручные правила ведут только в существующие категории.
+    known = set(config.categories) | {config.fallback_category}
+    assert set(config.overrides.values()) <= known

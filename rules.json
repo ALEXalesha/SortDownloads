@@ -1,6 +1,6 @@
 {
   "categories": {
-    "Учёба": [
+    "Study": [
       "класс",
       "klass",
       "демоверсия",
@@ -35,7 +35,7 @@
       "расписан",
       "raspisan"
     ],
-    "Документы": [
+    "Docs": [
       "договор",
       "dogovor",
       "соглашение",
@@ -58,7 +58,7 @@
       "паспорт",
       "снилс"
     ],
-    "Нейросети": [
+    "AI": [
       "comfyui",
       "lm-studio",
       "lmstudio",
@@ -97,7 +97,7 @@
       ".lora",
       ".sft"
     ],
-    "Код": [
+    "Dev": [
       "clone",
       "compiler",
       "explorer",
@@ -133,7 +133,7 @@
       ".java",
       ".nsi"
     ],
-    "Электроника": [
+    "Electronics": [
       "arduino",
       "esp8266",
       "esp32",
@@ -195,7 +195,7 @@
       ".f3d",
       ".sldprt"
     ],
-    "Игры": [
+    "Games": [
       "roblox",
       "steamsetup",
       "epic",
@@ -230,7 +230,7 @@
       "csgo",
       ".dem"
     ],
-    "Дизайн": [
+    "Design": [
       "figma",
       "miro",
       "holst",
@@ -249,7 +249,7 @@
       ".otf",
       ".woff"
     ],
-    "Программы": [
+    "Apps": [
       "setup",
       "installer",
       "install",
@@ -290,7 +290,7 @@
       ".exe",
       ".msi"
     ],
-    "Медиа": [
+    "Media": [
       "pesni.fm",
       "премьера",
       "клип",
@@ -320,7 +320,7 @@
       "трейлер",
       "trailer"
     ],
-    "Скриншоты": [
+    "Screenshots": [
       "снимок экрана",
       "снимок_экрана",
       "screenshot",
@@ -329,26 +329,26 @@
     ]
   },
   "patterns": {
-    "Скриншоты": [
+    "Screenshots": [
       "^photo_\\d{4}-\\d{2}-\\d{2}",
       "^image\\d{14}",
       "^(снимок экрана|screenshot)"
     ],
-    "Медиа": [
+    "Media": [
       "^audio-\\d{4}-\\d{2}-\\d{2}",
       "^\\d{4}(\\s*\\(\\d+\\))?\\.(mp4|mkv|mov|webm|mp3)$"
     ],
-    "Электроника": [
+    "Electronics": [
       "micropython"
     ],
     "3D": [
       "^\\d{4}-\\d{4}(\\s*\\(\\d+\\))?\\.(mp4|mkv|avi|webm|mov|png|jpg|jpeg|exr)$",
       "(?<![а-яёa-z])фон(?![а-яёa-z])"
     ],
-    "Учёба": [
+    "Study": [
       "(?<![а-яёa-z])иво(?![а-яёa-z])"
     ],
-    "Код": [
+    "Dev": [
       "(?<![а-яёa-z])sim(?![а-яёa-z])"
     ]
   },
@@ -457,16 +457,16 @@
     ]
   },
   "managed_folders": [
-    "Учёба",
-    "Документы",
-    "Игры",
+    "Study",
+    "Docs",
+    "Games",
     "3D",
-    "Код",
-    "Электроника",
-    "Дизайн",
-    "Программы",
-    "Медиа",
-    "Скриншоты",
+    "Dev",
+    "Electronics",
+    "Design",
+    "Apps",
+    "Media",
+    "Screenshots",
     "Others",
     "Documents",
     "Images",
@@ -479,7 +479,7 @@
     "Fonts",
     "Firmware",
     "Misc",
-    "Нейросети",
+    "AI",
     "Models"
   ],
   "ignore": [
