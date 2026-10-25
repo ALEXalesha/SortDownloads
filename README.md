@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="icon.png" width="96" alt="">
+
 # Downloads Sorter
 
 **Sorts the Downloads folder into categories and file types without touching other programs' and games' folders. It shows the plan first, moves second, and every move can be undone.**
