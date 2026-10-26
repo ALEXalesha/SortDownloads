@@ -40,7 +40,7 @@
 
 **Файлы:** создать `sorter/user_rules.py`, `tests/test_user_rules.py`.
 
-- [ ] **Шаг 1. Тесты наложения и файла** — `tests/test_user_rules.py`:
+- [ ] **Шаг 1. Тесты наложения и файла** - `tests/test_user_rules.py`:
 
 ```python
 """Правки правил из окна: наложение, операции, файл, связка с Config."""
@@ -200,15 +200,15 @@ def test_failed_write_leaves_the_old_file_and_no_temp(tmp_path, monkeypatch):
 Запуск: `python -m pytest tests/test_user_rules.py -q`
 Ожидание: ошибка импорта `sorter.user_rules`.
 
-- [ ] **Шаг 3. Модуль** — `sorter/user_rules.py` (операции добавит задача 2):
+- [ ] **Шаг 3. Модуль** - `sorter/user_rules.py` (операции добавит задача 2):
 
 ```python
 """Правки правил из окна: `my_rules.json` поверх `rules.json`.
 
-`rules.json` установщик кладёт заново при каждом обновлении — так до уже
+`rules.json` установщик кладёт заново при каждом обновлении - так до уже
 установленных копий доезжают новые категории. Писать туда правки из окна
 значит потерять их при первой переустановке, а запретить установщику
-перезаписывать файл — значит больше никогда не привезти людям новые правила.
+перезаписывать файл - значит больше никогда не привезти людям новые правила.
 Поэтому правки человека лежат отдельно и накладываются при каждой загрузке.
 
 Файл хранит отличия, а не копию: полная копия категорий после первой же правки
@@ -238,7 +238,7 @@ MIN_WORD = 2
 
 _SEPARATORS = re.compile(r"[\\/]")
 _UNREADABLE_TAIL = ("Правки из окна не применены; пока файл не починят или не "
-                    "удалят, окно не будет в него писать — иначе они "
+                    "удалят, окно не будет в него писать - иначе они "
                     "заменились бы пустыми.")
 
 
@@ -297,7 +297,7 @@ def _has_word(words, word: str) -> bool:
 def _grow(managed: list[str], name: str) -> None:
     """Дописать в `managed_folders` все части имени, которых там нет.
 
-    Вложенная категория (`Учёба/2026`) — это две папки, и обход спускается по
+    Вложенная категория (`Учёба/2026`) - это две папки, и обход спускается по
     ним по очереди (`config._check_managed`), поэтому нужны обе.
     """
     for part in (p for p in _SEPARATORS.split(name) if p):
@@ -313,7 +313,7 @@ def _shown(names: list[str]) -> str:
 def merge(base: Base, edits: dict, notices: list[str] | None = None) -> Merged:
     """Правила программы с наложенными правками. Без ввода-вывода.
 
-    Порядок категорий — приоритет (`classifier.find_category`), поэтому
+    Порядок категорий - приоритет (`classifier.find_category`), поэтому
     категории программы остаются на своих местах, а созданные встают в конец.
     """
     notices = [] if notices is None else notices
@@ -331,7 +331,7 @@ def merge(base: Base, edits: dict, notices: list[str] | None = None) -> Merged:
                 categories[existing].append(word)
         return existing
 
-    # Переименования и удаления. `moved` — куда уехала категория программы:
+    # Переименования и удаления. `moved` - куда уехала категория программы:
     # по нему за ней идут шаблоны и ручные правила.
     moved: dict[str, str] = {}
     for name, words in base.categories.items():
@@ -344,7 +344,7 @@ def merge(base: Base, edits: dict, notices: list[str] | None = None) -> Merged:
     for name, edit in edits["categories"].items():
         target = _find(categories, name)
         if target is None:
-            # Категории нет — её создал человек или её убрало обновление. Во
+            # Категории нет - её создал человек или её убрало обновление. Во
             # втором случае правка нужна, только если в ней есть слова.
             if not edit.get("created") and not edit.get("add"):
                 continue
@@ -362,8 +362,8 @@ def merge(base: Base, edits: dict, notices: list[str] | None = None) -> Merged:
         categories[name] = [w for w in categories[name]
                             if owned.get(w.lower(), name) == name]
 
-    # Своими папки только прибавляются: новое имя — чтобы файлы в него
-    # складывались и переразлагались, старое — чтобы из него было кому вынести.
+    # Своими папки только прибавляются: новое имя - чтобы файлы в него
+    # складывались и переразлагались, старое - чтобы из него было кому вынести.
     managed = list(base.managed_folders)
     base_keys = {folder_key(name) for name in base.categories}
     for name in categories:
@@ -399,7 +399,7 @@ def merge(base: Base, edits: dict, notices: list[str] | None = None) -> Merged:
 
     for name, (n_patterns, n_rules) in dropped.items():
         notices.append(
-            f"{USER_RULES_FILENAME}: категория «{name}» удалена — вместе с ней "
+            f"{USER_RULES_FILENAME}: категория «{name}» удалена - вместе с ней "
             f"сняты шаблоны ({n_patterns}) и ручные правила из overrides.json "
             f"({n_rules}).")
 
@@ -416,7 +416,7 @@ def merge(base: Base, edits: dict, notices: list[str] | None = None) -> Merged:
         overrides[filename] = target
     if skipped:
         notices.append(
-            f"{USER_RULES_FILENAME}: правила для файлов пропущены — их категории "
+            f"{USER_RULES_FILENAME}: правила для файлов пропущены - их категории "
             f"больше нет ({len(skipped)} шт.: {_shown(skipped)}).")
 
     return Merged(categories, patterns, overrides, managed)
@@ -490,7 +490,7 @@ def _clean(raw: dict, bad: list[str]) -> dict:
 
 
 def read(path, problems: list[str]) -> tuple[dict, bool]:
-    """Правки и флаг «файл есть, но читать его нельзя — писать поверх нельзя»."""
+    """Правки и флаг «файл есть, но читать его нельзя - писать поверх нельзя»."""
     path = Path(path)
     if not path.exists():
         return empty(), False
@@ -505,7 +505,7 @@ def read(path, problems: list[str]) -> tuple[dict, bool]:
     version = raw.get("version", VERSION)
     if type(version) is not int or version > VERSION:
         problems.append(
-            f"{path.name}: версия {version!r} незнакома — файл записан более "
+            f"{path.name}: версия {version!r} незнакома - файл записан более "
             f"новой программой. {_UNREADABLE_TAIL}")
         return empty(), True
     bad: list[str] = []
@@ -534,7 +534,7 @@ def write(path, edits: dict) -> None:
 
 - [ ] **Шаг 4. Тесты проходят**
 
-Запуск: `python -m pytest tests/test_user_rules.py -q` — все зелёные.
+Запуск: `python -m pytest tests/test_user_rules.py -q` - все зелёные.
 
 - [ ] **Шаг 5. Коммит:** `Правки правил из окна: наложение my_rules.json поверх rules.json`
 
@@ -544,7 +544,7 @@ def write(path, edits: dict) -> None:
 
 **Файлы:** дописать `sorter/user_rules.py`, `tests/test_user_rules.py`.
 
-- [ ] **Шаг 1. Тесты операций** — дописать в `tests/test_user_rules.py`:
+- [ ] **Шаг 1. Тесты операций** - дописать в `tests/test_user_rules.py`:
 
 ```python
 # --- операции ---
@@ -708,9 +708,9 @@ def test_moved_by_counts_files_the_word_would_take():
     assert ur.moved_by(names, cfg, after) == {"Others": 2}
 ```
 
-- [ ] **Шаг 2.** `python -m pytest tests/test_user_rules.py -q` — падают на отсутствующих операциях.
+- [ ] **Шаг 2.** `python -m pytest tests/test_user_rules.py -q` - падают на отсутствующих операциях.
 
-- [ ] **Шаг 3. Операции** — дописать в конец `sorter/user_rules.py`:
+- [ ] **Шаг 3. Операции** - дописать в конец `sorter/user_rules.py`:
 
 ```python
 # --- операции ---
@@ -737,7 +737,7 @@ def _check_name(name, merged: Merged, base: Base, ignore: str | None = None) -> 
     if problem:
         raise ValueError(f"«{name}»: {problem}.")
     if folder_key(name) == folder_key(base.fallback_category):
-        raise ValueError(f"«{base.fallback_category}» — запасная категория: туда "
+        raise ValueError(f"«{base.fallback_category}» - запасная категория: туда "
                          "и так попадает всё неопознанное.")
     existing = _find([n for n in merged.categories if n != ignore], name)
     if existing is not None:
@@ -747,7 +747,7 @@ def _check_name(name, merged: Merged, base: Base, ignore: str | None = None) -> 
 def _origin(base: Base, edits: dict, current: str) -> str | None:
     """Имя в `rules.json` категории, которая сейчас зовётся `current`.
 
-    None — категорию создал человек.
+    None - категорию создал человек.
     """
     key = folder_key(current)
     for old, new in edits["renamed"].items():
@@ -775,7 +775,7 @@ def _forget_rename(edits: dict, origin: str) -> None:
 
 
 def _tidy(edits: dict) -> dict:
-    """Пустая правка слов без `created` ничего не значит — убираем."""
+    """Пустая правка слов без `created` ничего не значит - убираем."""
     edits["categories"] = {
         name: edit for name, edit in edits["categories"].items()
         if edit.get("add") or edit.get("remove") or edit.get("created")}
@@ -886,7 +886,7 @@ def set_file(edits: dict, base: Base, filename: str, category: str) -> dict:
     edits = norm(edits)
     if isinstance(category, str) and folder_key(category) == folder_key(base.fallback_category):
         raise ValueError(
-            f"«{base.fallback_category}» — запасная категория. Правило туда "
+            f"«{base.fallback_category}» - запасная категория. Правило туда "
             f"ничего не решает: без него файл уедет в «{base.fallback_category}» "
             "сам, а в новую категорию уже не попадёт никогда.")
     current = _category(_merged(base, edits), category)
@@ -908,7 +908,7 @@ def clear_file(edits: dict, base: Base, filename: str) -> dict:
 
 
 def file_rule(edits: dict, filename: str) -> str | None:
-    """Категория из правила окна для этого файла. None — правила нет."""
+    """Категория из правила окна для этого файла. None - правила нет."""
     mine = name_key(filename)
     for name, category in norm(edits)["files"].items():
         if name_key(name) == mine:
@@ -941,9 +941,9 @@ def moved_by(names, before, after) -> Counter:
     return moved
 ```
 
-`Config(..., base=b, user_rules=...)` в последнем тесте требует полей из задачи 3 — этот тест пройдёт после неё.
+`Config(..., base=b, user_rules=...)` в последнем тесте требует полей из задачи 3 - этот тест пройдёт после неё.
 
-- [ ] **Шаг 4.** `python -m pytest tests/test_user_rules.py -q` — зелёные все, кроме `test_moved_by_counts_files_the_word_would_take`.
+- [ ] **Шаг 4.** `python -m pytest tests/test_user_rules.py -q` - зелёные все, кроме `test_moved_by_counts_files_the_word_would_take`.
 
 - [ ] **Шаг 5. Коммит:** `Операции над правками: категории, слова, правило для файла`
 
@@ -953,7 +953,7 @@ def moved_by(names, before, after) -> Counter:
 
 **Файлы:** `sorter/config.py`, `tests/test_user_rules.py`.
 
-- [ ] **Шаг 1. Тесты связки** — дописать:
+- [ ] **Шаг 1. Тесты связки** - дописать:
 
 ```python
 # --- Config.load ---
@@ -1006,14 +1006,14 @@ def test_unreadable_user_rules_lock_writing(tmp_path):
 
 
 def test_file_rule_from_the_window_is_not_called_an_argument_with_a_pattern(tmp_path):
-    """Правило из окна над шаблоном — решение человека, а не спор с программой."""
+    """Правило из окна над шаблоном - решение человека, а не спор с программой."""
     path = setup(tmp_path, {"files": {"0001.mp4": "Документы"}})
     cfg = Config.load(path)
     assert cfg.notices == []
     assert explain_category("0001.mp4", "", cfg) == ("Документы", BY_RULE)
 ```
 
-- [ ] **Шаг 2.** `python -m pytest tests/test_user_rules.py -q` — новые падают (`user`, `base` неизвестны).
+- [ ] **Шаг 2.** `python -m pytest tests/test_user_rules.py -q` - новые падают (`user`, `base` неизвестны).
 
 - [ ] **Шаг 3. Правка `sorter/config.py`**
 
@@ -1030,7 +1030,7 @@ def test_file_rule_from_the_window_is_not_called_an_argument_with_a_pattern(tmp_
 ```
 
 Сигнатура: `def load(cls, path: str | Path, *, user: bool = True) -> "Config":`, в
-docstring строка: «`user=False` — без `my_rules.json`: снимки настоящих правил
+docstring строка: «`user=False` - без `my_rules.json`: снимки настоящих правил
 проверяют правила программы, а не правки человека».
 
 Сразу после `overrides = _drop_frozen_rules(...)` вставить:
@@ -1061,10 +1061,10 @@ docstring строка: «`user=False` — без `my_rules.json`: снимки 
 И в `return cls(...)` дописать `base=base, user_rules=edits,
 user_rules_unreadable=user_unreadable,`.
 
-- [ ] **Шаг 4.** `python -m pytest -q` — весь набор зелёный (566 старых + новые).
+- [ ] **Шаг 4.** `python -m pytest -q` - весь набор зелёный (566 старых + новые).
 
 - [ ] **Шаг 5. Коммит:** `Config.load накладывает my_rules.json; снимки правил читают без него`
-  (вместе с задачей 5 — см. ниже, если снимки падают на машине с `my_rules.json`).
+  (вместе с задачей 5 - см. ниже, если снимки падают на машине с `my_rules.json`).
 
 ---
 
@@ -1078,8 +1078,8 @@ user_rules_unreadable=user_unreadable,`.
 """Свойства правок из окна: то, что обязано держаться при любых действиях.
 
 Юнит-тесты стерегут придуманные автором сценарии. Здесь hypothesis строит
-случайные правила программы и случайные цепочки действий человека — удачных и
-отказавших вперемешку — и после каждой проверяет договор целиком.
+случайные правила программы и случайные цепочки действий человека - удачных и
+отказавших вперемешку - и после каждой проверяет договор целиком.
 """
 import copy
 import json
@@ -1351,7 +1351,7 @@ def test_json_of_the_wrong_shape_is_cleaned_not_crashed(tmp_path_factory, raw):
   `Config.load(CONFIG_PATH, user=False)` и дописать над первым вызовом в каждом
   файле комментарий: «Без my_rules.json: снимок проверяет правила программы, а
   правки человека в папке разработчика ломали бы его на его машине».
-- [ ] **Шаг 2.** `python -m pytest -q` — зелёный.
+- [ ] **Шаг 2.** `python -m pytest -q` - зелёный.
 - [ ] **Шаг 3.** Коммит вместе с задачей 3.
 
 ---
@@ -1519,15 +1519,15 @@ def test_unreadable_rules_file_is_not_overwritten(window, folder):
     assert path.read_text(encoding="utf-8") == "{"
 ```
 
-- [ ] **Шаг 2.** `python -m pytest tests/test_ui_rules.py -q` — падает на импорте `ui_rules`.
+- [ ] **Шаг 2.** `python -m pytest tests/test_ui_rules.py -q` - падает на импорте `ui_rules`.
 
-- [ ] **Шаг 3. Диалог** — `sorter/ui_rules.py`:
+- [ ] **Шаг 3. Диалог** - `sorter/ui_rules.py`:
 
 ```python
 """Диалог «Правила раскладки»: категории и их слова из окна.
 
 Диалог правит копию правок и файлов не пишет: «Сохранить» отдаёт правки окну,
-«Отмена» просто закрывается. Запись и перестройка плана — дело окна
+«Отмена» просто закрывается. Запись и перестройка плана - дело окна
 (`GlassWindow._write_rules`), одно место на диалог и контекстное меню.
 """
 from __future__ import annotations
@@ -1566,7 +1566,7 @@ class RulesDialog(QDialog):
         self.hint.setWordWrap(True)
 
         left = QVBoxLayout()
-        left.addWidget(QLabel("Категории (выше — главнее)"))
+        left.addWidget(QLabel("Категории (выше - главнее)"))
         left.addWidget(self.cats, stretch=1)
         row = QHBoxLayout()
         for text, slot in (("Добавить", self.add_category),
@@ -1595,7 +1595,7 @@ class RulesDialog(QDialog):
         body.addLayout(right, stretch=1)
 
         footer = QHBoxLayout()
-        footer.addWidget(QLabel(f"{MINE.strip()} — добавлено тобой"))
+        footer.addWidget(QLabel(f"{MINE.strip()} - добавлено тобой"))
         footer.addStretch(1)
         save = QPushButton("Сохранить")
         save.clicked.connect(self.accept)
@@ -1744,7 +1744,7 @@ class RulesDialog(QDialog):
 
 `ur.folder_key` доступен, потому что `user_rules` импортирует его из `config`.
 
-- [ ] **Шаг 4.** `python -m pytest tests/test_ui_rules.py -q -k "not window and not context and not button and not unreadable"` — тесты диалога зелёные.
+- [ ] **Шаг 4.** `python -m pytest tests/test_ui_rules.py -q -k "not window and not context and not button and not unreadable"` - тесты диалога зелёные.
 
 - [ ] **Шаг 5. Коммит:** `Диалог «Правила раскладки»`
 
@@ -1758,7 +1758,7 @@ class RulesDialog(QDialog):
   `from . import history` добавить `from . import user_rules` и
   `from .ui_rules import RulesDialog`.
 
-- [ ] **Шаг 2. Кнопка** — в `_header` после `history_btn`:
+- [ ] **Шаг 2. Кнопка** - в `_header` после `history_btn`:
 
 ```python
         rules_btn = QPushButton("⚙ Правила")
@@ -1767,16 +1767,16 @@ class RulesDialog(QDialog):
 
 и `row.addWidget(rules_btn)` после `row.addWidget(history_btn)`.
 
-- [ ] **Шаг 3. Меню таблицы** — в `_table` перед `return self.table`:
+- [ ] **Шаг 3. Меню таблицы** - в `_table` перед `return self.table`:
 
 ```python
-        # Правый клик по файлу: «всегда класть в…». Пишет my_rules.json сразу —
+        # Правый клик по файлу: «всегда класть в…». Пишет my_rules.json сразу - 
         # подтверждать нечего, результат виден в той же строке плана.
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self._table_menu)
 ```
 
-- [ ] **Шаг 4. Методы окна** — после `show_history`:
+- [ ] **Шаг 4. Методы окна** - после `show_history`:
 
 ```python
     def show_rules(self):
@@ -1785,7 +1785,7 @@ class RulesDialog(QDialog):
             self._write_rules(dlg.edits)
 
     def rule_menu(self, row: int):
-        """Меню правил для строки плана. None — строки нет."""
+        """Меню правил для строки плана. None - строки нет."""
         if not 0 <= row < len(self.moves):
             return None
         name = self.moves[row].src.name
@@ -1842,7 +1842,7 @@ class RulesDialog(QDialog):
         return True
 ```
 
-- [ ] **Шаг 5.** `python -m pytest -q` — весь набор зелёный.
+- [ ] **Шаг 5.** `python -m pytest -q` - весь набор зелёный.
 
 - [ ] **Шаг 6. Коммит:** `Окно: кнопка «⚙ Правила» и «Всегда класть в…» по правому клику`
 
@@ -1862,7 +1862,7 @@ my_rules.json
   правому клику), где хранится (`my_rules.json` рядом с `config.json`, поверх
   `rules.json`, переживает обновления), почему не в `rules.json`, счётчик
   «заберёт из плана», Tk-окно без редактора. В приоритете категорий первой
-  строкой — правило для файла из окна. В абзаце 3.7 про `overrides.json` —
+  строкой - правило для файла из окна. В абзаце 3.7 про `overrides.json` - 
   что он по-прежнему только читается, а правила из окна пишутся в свой файл.
 - [ ] **Шаг 3. Коммит:** `README: правила из окна`
 
@@ -1870,12 +1870,12 @@ my_rules.json
 
 ### Задача 9. Сборка и живая проверка
 
-- [ ] **Шаг 1.** `python -m pytest -q` — зелёный; записать число тестов в README.
+- [ ] **Шаг 1.** `python -m pytest -q` - зелёный; записать число тестов в README.
 - [ ] **Шаг 2.** Пересобрать exe тем же способом, что прежние релизы (`Сортировщик.spec`,
   затем `installer.iss`), номер версии поднять на минорную.
 - [ ] **Шаг 3.** Запустить собранный exe на копии папки загрузок: добавить категорию и
   слово, убедиться, что план сменился; правый клик → «Всегда класть в»; закрыть,
-  открыть — правки на месте; `my_rules.json` появился рядом с `config.json`.
-  Кадры для README — только скриптом через `QWidget.grab()`, не снимком экрана.
+  открыть - правки на месте; `my_rules.json` появился рядом с `config.json`.
+  Кадры для README - только скриптом через `QWidget.grab()`, не снимком экрана.
 - [ ] **Шаг 4.** Коммит сборочных правок, пуш в Gitea, затем публикация на GitHub
   по общей схеме.

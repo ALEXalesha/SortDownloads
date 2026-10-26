@@ -1,4 +1,4 @@
-# Пути из окна + переносимость — дизайн
+# Пути из окна + переносимость - дизайн
 
 Дата: 2026-05-29
 
@@ -18,7 +18,7 @@
 ## Сохранение
 
 - `Config.save(path)` пишет config.json обратно (downloads_path, external_3d.enabled,
-  external_3d.path и все прочие поля — категории/type_map/managed/ignore сохраняются).
+  external_3d.path и все прочие поля - категории/type_map/managed/ignore сохраняются).
 - overrides хранятся отдельно в overrides.json, в config.json не пишутся.
 - Сохранение при «Применить» и при закрытии окна.
 
@@ -30,7 +30,7 @@
 ## Архитектура
 
 Ядро не меняется по смыслу. Добавляется `Config.save`. Меняется `ui_qt.py` и `scan`.
-config.json + overrides.json едут рядом с exe — это и есть переносимые настройки.
+config.json + overrides.json едут рядом с exe - это и есть переносимые настройки.
 
 ## Тесты (TDD)
 
