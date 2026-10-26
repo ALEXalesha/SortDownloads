@@ -1,4 +1,4 @@
-# Категория «Нейросети» — дизайн
+# Категория «Нейросети» - дизайн
 
 Дата: 2026-05-29
 
@@ -10,7 +10,7 @@
 
 ## config.json
 
-- Новая категория «Нейросети» РАНЬШЕ Код и Программы (приоритет — первое совпадение):
+- Новая категория «Нейросети» РАНЬШЕ Код и Программы (приоритет - первое совпадение):
   - инструменты: comfyui, lm-studio, lmstudio, sdxl, stable diffusion, stable-diffusion,
     automatic1111, a1111, fooocus, invokeai, kobold, ollama, oobabooga, exllama,
     controlnet, vae, checkpoint, diffusers, huggingface, whisper, openclip,
